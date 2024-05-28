@@ -1,0 +1,60 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def cargar_capacitor(R, C, V_in, t_max, steps, ESR):
+    tau = (R + ESR) * C
+    t = np.linspace(0, t_max, steps)
+    V_out = V_in * (1 - np.exp(-t / tau))
+    return t, V_out
+
+def descargar_capacitor(R, C, V_in, t_max, steps, ESR):
+    tau = (R + ESR) * C
+    t = np.linspace(0, t_max, steps)
+    V_out = V_in * np.exp(-t / tau)
+    return t, V_out
+
+def plot_results(t, carga, descarga, tipo):
+    plt.figure()
+    plt.plot(t, carga, label='Carga')
+    plt.plot(t, descarga, label='Descarga')
+    plt.xlabel('Tiempo (s)')
+    plt.ylabel('Voltaje (V)')
+    plt.title(f'Carga y Descarga del {tipo}')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# Parámetros del circuito
+R = 1e3  # Resistencia de 1 kΩ
+C_normal = 1e-6  # Capacitancia de 1 μF (normal)
+C_ceramico = 1e-6  # Capacitancia de 1 μF (cerámico)
+C_electrolitico = 1e-6  # Capacitancia de 1 μF (electrolítico)
+C_tantalum = 1e-6  # Capacitancia de 1 μF (tántalo)
+V_in = 5  # Voltaje de entrada escalón de 5 V
+t_max = 0.05  # Tiempo máximo de simulación de 50 ms
+steps = 1000  # Número de pasos de simulación
+
+# ESR (Equivalent Series Resistance) estimado para cada tipo de capacitor
+ESR_normal = 0.1  # Ohms (asumido bajo para un capacitor genérico)
+ESR_ceramico = 0.01  # Ohms (muy bajo)
+ESR_electrolitico = 1  # Ohms (alto)
+ESR_tantalum = 0.2  # Ohms (moderado)
+
+# Simular carga y descarga de capacitores
+t, carga_normal = cargar_capacitor(R, C_normal, V_in, t_max, steps, ESR_normal)
+_, descarga_normal = descargar_capacitor(R, C_normal, V_in, t_max, steps, ESR_normal)
+
+t, carga_ceramico = cargar_capacitor(R, C_ceramico, V_in, t_max, steps, ESR_ceramico)
+_, descarga_ceramico = descargar_capacitor(R, C_ceramico, V_in, t_max, steps, ESR_ceramico)
+
+t, carga_electrolitico = cargar_capacitor(R, C_electrolitico, V_in, t_max, steps, ESR_electrolitico)
+_, descarga_electrolitico = descargar_capacitor(R, C_electrolitico, V_in, t_max, steps, ESR_electrolitico)
+
+t, carga_tantalum = cargar_capacitor(R, C_tantalum, V_in, t_max, steps, ESR_tantalum)
+_, descarga_tantalum = descargar_capacitor(R, C_tantalum, V_in, t_max, steps, ESR_tantalum)
+
+# Graficar resultados¡
+plot_results(t, carga_normal, descarga_normal, 'Capacitor Normal')
+plot_results(t, carga_ceramico, descarga_ceramico, 'Capacitor Cerámico')
+plot_results(t, carga_electrolitico, descarga_electrolitico, 'Capacitor Electrolítico')
+plot_results(t, carga_tantalum, descarga_tantalum, 'Capacitor de Tántalo')
