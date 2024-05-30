@@ -1,32 +1,29 @@
-# Instala ggplot2 si aún no lo tienes instalado
 # install.packages("ggplot2")
 
 library(ggplot2)
 
-# Función para simular la carga de un capacitor
-cargar_capacitor <- function(R, C, V_in, t_max, steps) {
-  tau <- R * C
+cargar_capacitor <- function(Resistence, Capacitance, V_in, t_max, steps) {
+  tau <- Resistence * Capacitance
   t <- seq(0, t_max, length.out = steps)
   V_out <- V_in * (1 - exp(-t / tau))
   return(data.frame(t, V_out))
 }
 
-# Función para simular la descarga de un capacitor
-descargar_capacitor <- function(R, C, V_in, t_max, steps) {
-  tau <- R * C
+descargar_capacitor <- function(Resistence, Capacitance, V_in, t_max, steps) {
+  tau <- Resistence * Capacitance
   t <- seq(0, t_max, length.out = steps)
   V_out <- V_in * exp(-t / tau)
   return(data.frame(t, V_out))
 }
 
 # Parámetros del circuito
-R <- 1000  # Resistencia de 1 kΩ
-C <- 1e-6  # Capacitancia de 1 μF
+Resistance <- 1000  # Resistencia de 1 kΩ
+Capacitance <- 1e-6  # Capacitancia de 1 μF
 V_in <- 5  # Voltaje de entrada escalón de 5 V
 t_max <- 0.05  # Tiempo máximo de simulación de 50 ms
 steps <- 1000  # Número de pasos de simulación
 
-# Simular carga y descarga de capacitores
+
 carga_data <- cargar_capacitor(R, C, V_in, t_max, steps)
 descarga_data <- descargar_capacitor(R, C, V_in, t_max, steps)
 
