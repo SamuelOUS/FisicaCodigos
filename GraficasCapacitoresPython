@@ -1,14 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def cargar_capacitor(R, C, V_in, t_max, steps, ESR):
-    tau = (R + ESR) * C
+def cargar_capacitor(Resistence, Capacitance, V_in, t_max, steps, ESR):
+    tau = (Resistence + ESR) * Capacitance
     t = np.linspace(0, t_max, steps)
     V_out = V_in * (1 - np.exp(-t / tau))
     return t, V_out
 
-def descargar_capacitor(R, C, V_in, t_max, steps, ESR):
-    tau = (R + ESR) * C
+def descargar_capacitor(Resistences, Capacitances, V_in, t_max, steps, ESR):
+    tau = (Resistences + ESR) * Capacitances
     t = np.linspace(0, t_max, steps)
     V_out = V_in * np.exp(-t / tau)
     return t, V_out
@@ -20,12 +20,11 @@ def plot_results(t, carga, descarga, tipo):
     plt.xlabel('Tiempo (s)')
     plt.ylabel('Voltaje (V)')
     plt.title(f'Carga y Descarga del {tipo}')
-    plt.legend()
     plt.grid(True)
     plt.show()
 
 # Parámetros del circuito
-R = 1e3  # Resistencia de 1 kΩ
+Resistence = 1e3  # Resistencia de 1 kΩ
 C_normal = 1e-6  # Capacitancia de 1 μF (normal)
 C_ceramico = 1e-6  # Capacitancia de 1 μF (cerámico)
 C_electrolitico = 1e-6  # Capacitancia de 1 μF (electrolítico)
@@ -41,8 +40,8 @@ ESR_electrolitico = 1  # Ohms (alto)
 ESR_tantalum = 0.2  # Ohms (moderado)
 
 # Simular carga y descarga de capacitores
-t, carga_normal = cargar_capacitor(R, C_normal, V_in, t_max, steps, ESR_normal)
-_, descarga_normal = descargar_capacitor(R, C_normal, V_in, t_max, steps, ESR_normal)
+t, carga_normal = cargar_capacitor(Resistence, C_normal, V_in, t_max, steps, ESR_normal)
+_, descarga_normal = descargar_capacitor(Resistence, C_normal, V_in, t_max, steps, ESR_normal)
 
 t, carga_ceramico = cargar_capacitor(R, C_ceramico, V_in, t_max, steps, ESR_ceramico)
 _, descarga_ceramico = descargar_capacitor(R, C_ceramico, V_in, t_max, steps, ESR_ceramico)
